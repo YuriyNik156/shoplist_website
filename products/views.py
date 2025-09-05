@@ -22,7 +22,7 @@ class RegisterView(CreateView):
 # Список товаров для пользователей
 class ProductListView(ListView):
     model = Product
-    template_name = "product_list.html"
+    template_name = "base.html" # Временно, позже вернуть products.html
     context_object_name = "products"
 
 # Роль менеджера
