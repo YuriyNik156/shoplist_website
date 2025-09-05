@@ -34,5 +34,5 @@ class ManagerRequiredMixin(UserPassesTestMixin):
 class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Product
     fields = ["name", "description", "price", "image", "shop"]
-    template_name = "product_form.html"
+    template_name = "base.html" # Временно, позже вернуть products.html
     success_url = reverse_lazy("products")
