@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+# БД магазинов
 class Shop(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField()
@@ -12,12 +13,13 @@ class Shop(models.Model):
     def __str__(self):
         return f"{self.name} - {self.address}"
 
+# БД товаров
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
-    shop = models.ForeignKey("Shop", on_delete=models.CASCADE, related_name="products")
+    shop = models.ForeignKey("Shop", on_delete=models.CASCADE, related_name="products") # Связь магазинов и товаров
 
     class Meta:
         verbose_name = "Товар"
@@ -26,6 +28,7 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} ({self.shop.name})"
 
+# Кастомная модель пользователя
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
         ('admin', 'Admin'),

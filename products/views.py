@@ -30,7 +30,7 @@ class ManagerRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.role in ["sales_executive", "admin"]
 
-# Добавление товара
+# Добавление товара (для менеджера)
 class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Product
     fields = ["name", "description", "price", "image", "shop"]

@@ -2,19 +2,19 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import Shop, Product, CustomUser
 
-
+# Регистрация магазинов
 @admin.register(Shop)
 class ShopAdmin(admin.ModelAdmin):
     list_display = ("name", "address")
 
-
+# Регистрация товаров
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "price", "shop")
     search_fields = ("name",)
     list_filter = ("shop",)
 
-
+# Регистрация пользователей
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
