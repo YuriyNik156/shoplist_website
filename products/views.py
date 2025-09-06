@@ -1,11 +1,11 @@
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from django.views.generic import CreateView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import CustomUser, Product
-from .forms import CustomUserCreationForm
+from .forms import ProductForm, CustomUserCreationForm
 
 # Регистрация
 class RegisterView(CreateView):
@@ -19,20 +19,33 @@ class RegisterView(CreateView):
         login(self.request, user)
         return redirect("products")
 
-# Список товаров для пользователей
+# Список товаров (для всех)
 class ProductListView(ListView):
     model = Product
-    template_name = "base.html" # Временно, позже вернуть products.html
+    template_name = "products.html"
     context_object_name = "products"
 
-# Роль менеджера
+# Проверка роли менеджера
 class ManagerRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.role in ["sales_executive", "admin"]
 
-# Добавление товара (для менеджера)
+# Создание товара (для менеджера)
 class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Product
-    fields = ["name", "description", "price", "image", "shop"]
-    template_name = "base.html" # Временно, позже вернуть products.html
+    form_class = ProductForm
+    template_name = "product_form.html"
+    success_url = reverse_lazy("products")
+
+# Редактирование товара (для менеджера)
+class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "product_form.html"
+    success_url = reverse_lazy("products")
+
+# Удаление товара (для менеджера)
+class ProductDeleteView(LoginRequiredMixin, ManagerRequiredMixin, DeleteView):
+    model = Product
+    template_name = "product_confirm_delete.html"
     success_url = reverse_lazy("products")
