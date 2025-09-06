@@ -11,7 +11,7 @@ from .forms import ProductForm, CustomUserCreationForm
 class RegisterView(CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm
-    template_name = "register.html"
+    template_name = "products/register.html"
     success_url = reverse_lazy("products")
 
     def form_valid(self, form):
@@ -22,7 +22,7 @@ class RegisterView(CreateView):
 # Список товаров (для всех)
 class ProductListView(ListView):
     model = Product
-    template_name = "products_list.html"
+    template_name = "products/products_list.html"
     context_object_name = "products"
 
 # Проверка роли менеджера
@@ -34,18 +34,18 @@ class ManagerRequiredMixin(UserPassesTestMixin):
 class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    template_name = "product_form.html"
+    template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
 
 # Редактирование товара (для менеджера)
 class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = "product_form.html"
+    template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
 
 # Удаление товара (для менеджера)
 class ProductDeleteView(LoginRequiredMixin, ManagerRequiredMixin, DeleteView):
     model = Product
-    template_name = "product_confirm_delete.html"
+    template_name = "products/product_confirm_delete.html"
     success_url = reverse_lazy("products")
