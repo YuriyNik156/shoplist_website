@@ -1,24 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Товары</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>Список товаров</h2>
+{% block content %}
+<h1>Список товаров</h1>
+
+<form method="get">
+    <input type="text" name="q" placeholder="Поиск по названию" value="{{ request.GET.q }}">
+    <button type="submit">Поиск</button>
+</form>
+
 <ul>
-  {% for product in products %}
-    <li>{{ product.name }} — {{ product.price }} ₽
-        <a href="{% url 'product_edit' product.pk %}">Редактировать</a> |
-        <a href="{% url 'product_delete' product.pk %}">Удалить</a>
-    </li>
-  {% empty %}
-    <li>Нет товаров</li>
-  {% endfor %}
+    {% for product in products %}
+        <li>
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100">
+            {% endif %}
+            <strong>{{ product.name }}</strong> — {{ product.price }} ₽
+        </li>
+    {% empty %}
+        <li>Товары не найдены</li>
+    {% endfor %}
 </ul>
-<a href="{% url 'product_add' %}">Добавить товар</a> |
-<a href="{% url 'logout' %}">Выйти</a>
 
-</body>
-</html>
+<div class="pagination">
+    {% if products.has_previous %}
+        <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Назад</a>
+    {% endif %}
+
+    Страница {{ products.number }} из {{ products.paginator.num_pages }}
+
+    {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Вперёд</a>
+    {% endif %}
+</div>
+{% endblock %}
