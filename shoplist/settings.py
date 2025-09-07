@@ -1,5 +1,4 @@
 from pathlib import Path
-from django.urls import reverse_lazy
 
 # Базовые настройки
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -116,4 +115,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Куда перенаправлять после логина
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = reverse_lazy("login")
+LOGOUT_REDIRECT_URL = "/login/"
