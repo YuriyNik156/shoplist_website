@@ -1,6 +1,7 @@
 from django.contrib.auth import login
+from django.db.models import Q
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -23,6 +24,16 @@ class ProductListView(ListView):
     model = Product
     template_name = "products/product_list.html"
     context_object_name = "products"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get("q")
+        if query:
+            queryset = queryset.filter(
+                Q(name__icontains=query)
+            )
+        return queryset
 
 # Проверка роли менеджера
 class ManagerRequiredMixin(UserPassesTestMixin):

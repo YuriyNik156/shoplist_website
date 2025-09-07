@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shoplist</title>
+</head>
+<body>
+
+    <nav>
+        <a href="{% url 'products' %}">Главная</a> |
+        {% if user.is_authenticated %}
+            Привет, {{ user.username }} |
+            <a href="{% url 'logout' %}">Выход</a>
+        {% else %}
+            <a href="{% url 'login' %}">Вход</a> |
+            <a href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+    </nav>
+
+    <hr>
+    {% block content %}{% endblock %}
+
+</body>
+</html>
