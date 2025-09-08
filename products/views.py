@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView
 
 from .forms import ProductForm, CustomUserCreationForm
 from .models import CustomUser, Product
@@ -19,6 +20,13 @@ class RegisterView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect(self.success_url)
+
+# Обработка для логина пользователя
+class CustomLoginView(LoginView):
+    template_name = "products/login.html"
+
+    def get_success_url(self):
+        return reverse_lazy("products")
 
 # Список товаров (для авторизованных пользователей)
 class ProductListView(LoginRequiredMixin, ListView):

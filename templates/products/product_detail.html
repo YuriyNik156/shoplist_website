@@ -11,11 +11,11 @@
 
 <h3>Где купить:</h3>
 <ul>
-    {% for shop in product.shop_addresses.all %}
-        <li>{{ shop.name }} — {{ shop.address }}</li>
-    {% empty %}
-        <li>Адреса магазинов не указаны</li>
-    {% endfor %}
+    {% if product.shop %}
+        <li>{{ product.shop.name }} — {{ product.shop.address }}</li>
+    {% else %}
+        <li>Адрес магазина не указан</li>
+    {% endif %}
 </ul>
 
 <a href="{% url 'products' %}">← Назад к списку товаров</a>
