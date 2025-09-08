@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import CustomUser, Product
@@ -34,6 +34,12 @@ class ProductListView(ListView):
                 Q(name__icontains=query)
             )
         return queryset
+
+# Детальное представление товара
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "product_detail.html"
+    context_object_name = "product"
 
 # Проверка роли менеджера
 class ManagerRequiredMixin(UserPassesTestMixin):
