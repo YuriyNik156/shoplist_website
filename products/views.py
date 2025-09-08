@@ -5,22 +5,23 @@ from django.shortcuts import redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from .models import CustomUser, Product
 from .forms import ProductForm, CustomUserCreationForm
+from .models import CustomUser, Product
 
 # Регистрация
 class RegisterView(CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm
     template_name = "products/register.html"
+    success_url = reverse_lazy("products")
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect("products")
+        return redirect(self.success_url)
 
-# Список товаров (для всех)
-class ProductListView(ListView):
+# Список товаров (для авторизованных пользователей)
+class ProductListView(LoginRequiredMixin, ListView):
     model = Product
     template_name = "products/product_list.html"
     context_object_name = "products"
@@ -31,20 +32,23 @@ class ProductListView(ListView):
         query = self.request.GET.get("q")
         if query:
             queryset = queryset.filter(
-                Q(name__icontains=query)
+                Q(name__icontains=query) |  Q(description__icontains=query)
             )
         return queryset
 
-# Детальное представление товара
-class ProductDetailView(DetailView):
+# Детальное представление товара (для авторизованных пользователей)
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
-    template_name = "product_detail.html"
+    template_name = "products/product_detail.html"
     context_object_name = "product"
 
 # Проверка роли менеджера
 class ManagerRequiredMixin(UserPassesTestMixin):
     def test_func(self):
-        return self.request.user.is_authenticated and self.request.user.role in ["sales_executive", "admin"]
+        return (
+                self.request.user.is_authenticated
+                and getattr(self.request.user, "role", None) in ["sales_executive", "admin"]
+        )
 
 # Создание товара (для менеджера)
 class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
