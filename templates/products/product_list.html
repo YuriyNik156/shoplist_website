@@ -4,7 +4,7 @@
 <h1>Список товаров</h1>
 
 <form method="get">
-    <input type="text" name="q" placeholder="Поиск по названию" value="{{ request.GET.q }}">
+    <input type="text" name="q" placeholder="Поиск по названию или описанию" value="{{ request.GET.q }}">
     <button type="submit">Поиск</button>
 </form>
 
@@ -12,9 +12,13 @@
     {% for product in products %}
         <li>
             {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100">
+                <a href="{% url 'product_detail' product.pk %}">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100">
+                </a>
             {% endif %}
-            <strong>{{ product.name }}</strong> — {{ product.price }} ₽
+            <a href="{% url 'product_detail' product.pk %}">
+                <strong>{{ product.name }}</strong>
+            </a> — {{ product.price }} ₽
         </li>
     {% empty %}
         <li>Товары не найдены</li>
