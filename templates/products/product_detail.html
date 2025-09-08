@@ -18,7 +18,7 @@
     {% endfor %}
 </ul>
 
-{% if user.is_authenticated and user.is_staff %}
+{% if user.is_authenticated and user.role in "admin sales_executive" %}
     <div style="margin-top: 20px;">
         <a href="{% url 'product_edit' product.pk %}">✏️ Изменить</a> |
         <a href="{% url 'product_delete' product.pk %}">🗑 Удалить</a>
