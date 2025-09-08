@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+
+{% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="300">
+{% endif %}
+
+<p><strong>Цена:</strong> {{ product.price }} ₽</p>
+
+<h3>Где купить:</h3>
+<ul>
+    {% for shop in product.shop_addresses.all %}
+        <li>{{ shop.name }} — {{ shop.address }}</li>
+    {% empty %}
+        <li>Адреса магазинов не указаны</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'products' %}">← Назад к списку товаров</a>
+{% endblock %}
