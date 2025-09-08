@@ -25,6 +25,12 @@
     {% endfor %}
 </ul>
 
+{% if user.is_authenticated and user.is_staff %}
+    <div style="margin: 15px 0;">
+        <a href="{% url 'product_add' %}">➕ Добавить товар</a>
+    </div>
+{% endif %}
+
 <div class="pagination">
     {% if products.has_previous %}
         <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Назад</a>

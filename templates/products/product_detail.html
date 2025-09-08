@@ -11,12 +11,19 @@
 
 <h3>Где купить:</h3>
 <ul>
-    {% if product.shop %}
-        <li>{{ product.shop.name }} — {{ product.shop.address }}</li>
-    {% else %}
-        <li>Адрес магазина не указан</li>
-    {% endif %}
+    {% for shop in product.shop_addresses.all %}
+        <li>{{ shop.name }} — {{ shop.address }}</li>
+    {% empty %}
+        <li>Адреса магазинов не указаны</li>
+    {% endfor %}
 </ul>
+
+{% if user.is_authenticated and user.is_staff %}
+    <div style="margin-top: 20px;">
+        <a href="{% url 'product_edit' product.pk %}">✏️ Изменить</a> |
+        <a href="{% url 'product_delete' product.pk %}">🗑 Удалить</a>
+    </div>
+{% endif %}
 
 <a href="{% url 'products' %}">← Назад к списку товаров</a>
 {% endblock %}
