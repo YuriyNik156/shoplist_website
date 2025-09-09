@@ -34,6 +34,8 @@ class ProductListView(LoginRequiredMixin, ListView):
     template_name = "products/product_list.html"
     context_object_name = "products"
     paginate_by = 10
+    login_url = '/login/'
+    redirect_field_name = 'next'
 
     def get_queryset(self):
         queryset = super().get_queryset()
