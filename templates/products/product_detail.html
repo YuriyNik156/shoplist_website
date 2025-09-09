@@ -1,29 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ product.name }}</h1>
+<div class="card mb-4">
+    {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+    {% endif %}
+    <div class="card-body">
+        <h2 class="card-title">{{ product.name }}</h2>
+        <p class="card-text"><strong>Цена:</strong> {{ product.price }} ₽</p>
+        <p class="card-text">{{ product.description }}</p>
 
-{% if product.image %}
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="300">
-{% endif %}
+        <h4>Где купить:</h4>
+        <ul>
+            <li>{{ product.shop.name }} — {{ product.shop.address }}</li>
+        </ul>
 
-<p><strong>Цена:</strong> {{ product.price }} ₽</p>
+        <a href="{% url 'products' %}" class="btn btn-secondary">← Назад</a>
 
-<h3>Где купить:</h3>
-<ul>
-    {% for shop in product.shop_addresses.all %}
-        <li>{{ shop.name }} — {{ shop.address }}</li>
-    {% empty %}
-        <li>Адреса магазинов не указаны</li>
-    {% endfor %}
-</ul>
-
-{% if user.is_authenticated and user.role in "admin sales_executive" %}
-    <div style="margin-top: 20px;">
-        <a href="{% url 'product_edit' product.pk %}">✏️ Изменить</a> |
-        <a href="{% url 'product_delete' product.pk %}">🗑 Удалить</a>
+        {% if user.is_authenticated and user.role in "sales_executive admin" %}
+            <a href="{% url 'product_edit' product.pk %}" class="btn btn-warning">✏️ Изменить</a>
+            <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger">🗑 Удалить</a>
+        {% endif %}
     </div>
-{% endif %}
-
-<a href="{% url 'products' %}">← Назад к списку товаров</a>
+</div>
 {% endblock %}
