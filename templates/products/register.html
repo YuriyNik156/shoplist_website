@@ -26,9 +26,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="id_phone_number" class="form-label">Телефон</label>
-                        {{ form.phone_number|add_class:"form-control" }}
-                        {{ form.phone_number.errors }}
+                        <label for="id_role" class="form-label">Роль</label>
+                        {{ form.role|add_class:"form-select" }}
+                        {{ form.role.errors }}
                     </div>
 
                     <div class="mb-3">
@@ -39,8 +39,8 @@
 
                     <div class="mb-3">
                         <label for="id_password2" class="form-label">Подтверждение пароля</label>
-                        {{ form.password2 }}
                         {{ form.password2|add_class:"form-control" }}
+                        {{ form.password2.errors }}
                     </div>
 
                     <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
