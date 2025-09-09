@@ -12,7 +12,10 @@ class CustomUserCreationForm(UserCreationForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "description", "price", "image", "shop"]
+        fields = ["name", "description", "price", "image", "shop_address"]
+        widgets = {
+            "shop_address": forms.TextInput(attrs={"class": "form-control", "placeholder": "Введите адрес магазина"})
+        }
 
     def clean_price(self):
         price = self.cleaned_data.get("price")
