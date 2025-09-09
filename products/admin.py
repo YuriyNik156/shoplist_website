@@ -10,9 +10,9 @@ class ShopAdmin(admin.ModelAdmin):
 # Регистрация товаров
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "price", "shop")
+    list_display = ("name", "price", "shop_address")
     search_fields = ("name",)
-    list_filter = ("shop",)
+    list_filter = ("shop_address",)
 
 # Регистрация пользователей
 @admin.register(CustomUser)
