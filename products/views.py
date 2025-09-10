@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.views import LoginView
 
 from .forms import ProductForm, CustomUserCreationForm
@@ -61,21 +61,28 @@ class ManagerRequiredMixin(UserPassesTestMixin):
         )
 
 # Создание товара (для менеджера)
-class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
+    permission_required = "products.add_product"
 
 # Редактирование товара (для менеджера)
-class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, ManagerRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
+    permission_required = "products.change_product"
+
+    def get_success_url(self):
+        return reverse_lazy("product_detail", kwargs={"pk": self.object.pk})
 
 # Удаление товара (для менеджера)
-class ProductDeleteView(LoginRequiredMixin, ManagerRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, ManagerRequiredMixin, DeleteView):
     model = Product
+    context_object_name = "product"
     template_name = "products/product_confirm_delete.html"
     success_url = reverse_lazy("products")
+    permission_required = "products.delete_product"
