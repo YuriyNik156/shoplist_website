@@ -26,7 +26,7 @@ class Product(models.Model):
         verbose_name_plural = "Товары"
 
     def __str__(self):
-        return f"{self.name} ({self.shop.name})"
+        return f"{self.name} ({self.shop_address})"
 
 # Кастомная модель пользователя
 class CustomUser(AbstractUser):
