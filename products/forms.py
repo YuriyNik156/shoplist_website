@@ -7,6 +7,11 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ("username", "email", "role")
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-control"}),
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "role": forms.Select(attrs={"class": "form-select"}),
+        }
 
 # CRUD для менеджеров
 class ProductForm(forms.ModelForm):
@@ -14,7 +19,11 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ["name", "description", "price", "image", "shop_address"]
         widgets = {
-            "shop_address": forms.TextInput(attrs={"class": "form-control", "placeholder": "Введите адрес магазина"})
+            "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Введите название товара"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Описание"}),
+            "price": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Цена"}),
+            "shop_address": forms.TextInput(attrs={"class": "form-control", "placeholder": "Адрес магазина"}),
+            "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
         }
 
     def clean_price(self):
