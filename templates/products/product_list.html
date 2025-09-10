@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="mb-4">Список товаров</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Список товаров</h1>
+    <a href="{% url 'product_add' %}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i> Добавить товар
+    </a>
+</div>
 
 <form method="get" class="mb-4 d-flex">
     <input type="text" name="q" class="form-control me-2" placeholder="Поиск по названию или описанию" value="{{ request.GET.q }}">
@@ -45,5 +50,4 @@
         <span></span>
     {% endif %}
 </div>
-
 {% endblock %}

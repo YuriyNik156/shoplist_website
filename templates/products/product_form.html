@@ -1,18 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Товар</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>Форма товара</h2>
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Сохранить</button>
-</form>
-<a href="{% url 'products' %}">Назад к списку</a>
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-3">{% if object %}Редактировать{% else %}Добавить{% endif %} товар</h2>
 
-</body>
-</html>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="text-danger small">
+            {% for error in field.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-success">
+      {% if object %}Сохранить{% else %}Добавить{% endif %}
+    </button>
+    <a href="{% url 'products' %}" class="btn btn-secondary">Отмена</a>
+  </form>
+</div>
+{% endblock %}

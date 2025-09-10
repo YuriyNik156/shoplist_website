@@ -61,28 +61,25 @@ class ManagerRequiredMixin(UserPassesTestMixin):
         )
 
 # Создание товара (для менеджера)
-class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, ManagerRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
-    permission_required = "products.add_product"
 
 # Редактирование товара (для менеджера)
-class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, ManagerRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
-    permission_required = "products.change_product"
 
     def get_success_url(self):
         return reverse_lazy("product_detail", kwargs={"pk": self.object.pk})
 
 # Удаление товара (для менеджера)
-class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, ManagerRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, ManagerRequiredMixin, DeleteView):
     model = Product
     context_object_name = "product"
     template_name = "products/product_confirm_delete.html"
     success_url = reverse_lazy("products")
-    permission_required = "products.delete_product"
