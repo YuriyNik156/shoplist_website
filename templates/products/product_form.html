@@ -4,7 +4,7 @@
 <div class="container mt-4">
   <h2 class="mb-3">{% if object %}Редактировать{% else %}Добавить{% endif %} товар</h2>
 
-  <form method="post" novalidate>
+  <form method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {% for field in form %}
       <div class="mb-3">
