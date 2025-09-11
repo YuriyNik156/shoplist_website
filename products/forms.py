@@ -17,12 +17,12 @@ class CustomUserCreationForm(UserCreationForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "description", "price", "image", "shop_address"]
+        fields = ["name", "description", "price", "image", "shop"]
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Введите название товара"}),
             "description": forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Описание"}),
             "price": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Цена"}),
-            "shop_address": forms.TextInput(attrs={"class": "form-control", "placeholder": "Адрес магазина"}),
+            "shop": forms.TextInput(attrs={"class": "form-control", "placeholder": "Адрес магазина"}),
             "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
         }
 
