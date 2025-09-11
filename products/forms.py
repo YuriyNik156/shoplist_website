@@ -22,7 +22,6 @@ class ProductForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Введите название товара"}),
             "description": forms.Textarea(attrs={"class": "form-control", "rows": 3, "placeholder": "Описание"}),
             "price": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Цена"}),
-            "shop": forms.TextInput(attrs={"class": "form-control", "placeholder": "Адрес магазина"}),
             "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
         }
 

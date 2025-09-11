@@ -20,12 +20,12 @@
            placeholder="Поиск по названию или описанию"
            value="{{ q }}">
 
-    <select name="store" class="form-select">
+    <select name="shop" class="form-select">
         <option value="">Все магазины</option>
-        {% for store in stores %}
-            <option value="{{ store.id }}"
-                {% if selected_store == store.id|stringformat:"s" %}selected{% endif %}>
-                {{ store.name }}
+        {% for shop in shops %}
+            <option value="{{ shop.id }}"
+                {% if selected_shop == shop.id|stringformat:"s" %}selected{% endif %}>
+                {{ shop.name }}
             </option>
         {% endfor %}
     </select>

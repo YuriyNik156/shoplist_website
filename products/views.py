@@ -52,9 +52,9 @@ class ProductListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["stores"] = Shop.objects.all()
+        context["shops"] = Shop.objects.all()
         context["q"] = self.request.GET.get("q", "")
-        context["selected_store"] = self.request.GET.get("shop", "")
+        context["selected_shop"] = self.request.GET.get("shop", "")
         return context
 
 # Детальное представление товара (для авторизованных пользователей)
@@ -84,12 +84,6 @@ class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
     form_class = ProductForm
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
-
-    def get_form(self):
-        form = super().get_form()
-        # Менеджер видит все магазины, созданные суперпользователем
-        form.fields['shop'].queryset = Shop.objects.filter(manager__is_superuser=True)
-        return form
 
     def get_success_url(self):
         return reverse_lazy("product_detail", kwargs={"pk": self.object.pk})
