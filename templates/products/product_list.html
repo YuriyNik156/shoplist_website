@@ -14,11 +14,26 @@
     {% endif %}
 </div>
 
-<form method="get" class="mb-4 d-flex">
-    <input type="text" name="q" class="form-control me-2" placeholder="Поиск по названию или описанию" value="{{ request.GET.q }}">
-    <button type="submit" class="btn btn-primary">Поиск</button>
+<!-- Поиск + фильтр по магазинам -->
+<form method="get" class="mb-4 d-flex flex-wrap gap-2">
+    <input type="text" name="q" class="form-control"
+           placeholder="Поиск по названию или описанию"
+           value="{{ q }}">
+
+    <select name="store" class="form-select">
+        <option value="">Все магазины</option>
+        {% for store in stores %}
+            <option value="{{ store.id }}"
+                {% if selected_store == store.id|stringformat:"s" %}selected{% endif %}>
+                {{ store.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="btn btn-primary">Искать</button>
 </form>
 
+<!-- Список товаров -->
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for product in products %}
         <div class="col">
@@ -41,6 +56,19 @@
     {% endfor %}
 </div>
 
+<!-- Блок "Наши магазины" -->
+<div class="mb-4 mt-5">
+    <h5>Наши магазины:</h5>
+    <div class="d-flex flex-wrap gap-2">
+        {% for store in stores %}
+            <span class="badge bg-primary">{{ store.name }}</span>
+        {% empty %}
+            <span class="text-muted">Магазины пока не добавлены</span>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Пагинация -->
 {% if is_paginated %}
 <div class="d-flex justify-content-center mt-4">
     <nav aria-label="Навигация по страницам">
@@ -48,7 +76,10 @@
 
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Назад</a>
+                    <a class="page-link"
+                       href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if selected_store %}&store={{ selected_store }}{% endif %}">
+                       Назад
+                    </a>
                 </li>
             {% endif %}
 
@@ -56,13 +87,21 @@
                 {% if page_obj.number == num %}
                     <li class="page-item active"><span class="page-link">{{ num }}</span></li>
                 {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a></li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ num }}{% if q %}&q={{ q }}{% endif %}{% if selected_store %}&store={{ selected_store }}{% endif %}">
+                           {{ num }}
+                        </a>
+                    </li>
                 {% endif %}
             {% endfor %}
 
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Вперёд</a>
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if selected_store %}&store={{ selected_store }}{% endif %}">
+                       Вперёд
+                    </a>
                 </li>
             {% endif %}
 
