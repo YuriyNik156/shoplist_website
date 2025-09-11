@@ -60,8 +60,8 @@
 <div class="mb-4 mt-5">
     <h5>Наши магазины:</h5>
     <div class="d-flex flex-wrap gap-2">
-        {% for store in stores %}
-            <span class="badge bg-primary">{{ store.name }}</span>
+        {% for shop in shops %}
+            <span class="badge bg-primary">{{ shop.name }} - {{ shop.address }}</span>
         {% empty %}
             <span class="text-muted">Магазины пока не добавлены</span>
         {% endfor %}
