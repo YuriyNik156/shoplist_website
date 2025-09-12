@@ -39,7 +39,7 @@ class ProductListView(LoginRequiredMixin, ListView):
     redirect_field_name = 'next'
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().order_by('id')
         query = self.request.GET.get("q")
         shop_id = self.request.GET.get("shop")
         if query:
