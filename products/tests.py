@@ -59,25 +59,26 @@ class ViewsAccessTest(TestCase):
             role="user"
         )
 
-        # создание магазина от имени администратора
+        # Создание магазина от имени администратора
         self.shop = Shop.objects.create(
             name="Магазин №1",
             address="ул. Ленина, 1"
         )
 
+    # Неавторизованный посетитель при попытке зайти на список товаров получает редирект на логин
     def test_visitor_redirects_to_login(self):
-        """Неавторизованный посетитель при попытке зайти на список товаров получает редирект на логин"""
         response = self.client.get(reverse("products"))
         self.assertEqual(response.status_code, 302)
         self.assertIn("/login", response.url)
+
+    # Обычный пользователь после логина может просматривать список товаров
     def test_user_can_view_products(self):
-        """Обычный пользователь после логина может просматривать список товаров"""
         self.client.login(email="user@test.com", password="userpass")
         response = self.client.get(reverse("products"))
         self.assertEqual(response.status_code, 200)
 
+    # Администратор может добавить товар в магазин
     def test_admin_can_add_product(self):
-        """Админ может добавить товар в магазин"""
         self.client.login(email="admin@test.com", password="adminpass")
         response = self.client.post(
             reverse("product_add"),
@@ -88,12 +89,11 @@ class ViewsAccessTest(TestCase):
                 "shop": self.shop.id,
             }
         )
-        # ожидаем редирект на список товаров
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Product.objects.count(), 1)
 
+    # Менеджер может добавить товар в магазин
     def test_manager_can_add_product(self):
-        """Менеджер может добавить товар в магазин"""
         self.client.login(email="manager@test.com", password="managerpass")
         response = self.client.post(
             reverse("product_add"),
@@ -107,8 +107,8 @@ class ViewsAccessTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Product.objects.count(), 1)
 
+    # Обычный пользователь не может добавить товар (ошибка 403)
     def test_user_cannot_add_product(self):
-        """Обычный пользователь не может добавить товар (403)"""
         self.client.login(email="user@test.com", password="userpass")
         response = self.client.post(
             reverse("product_add"),
