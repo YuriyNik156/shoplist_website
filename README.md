@@ -142,8 +142,44 @@
 * **Запуск тестов**
 
    ```bash
-   python manage.py runserver
+   python manage.py test
    ```
+
+---
+
+## Структура проекта
+
+```
+shoplist_website/
+├── media/                                # Изображения
+│   └── products/               
+├── products/                             # Основное приложение (модели, views, templates)
+│   ├── migrations                        # Миграции базы данных        
+│   ├── templatetags                      # Набор тегов и фильтров для Django-шаблонов    
+│   │   └── form_tags.py                  # Фильтр для подключения стилей            
+│   ├── admin.py                          # Админка
+│   ├── forms.py                          # Формы
+│   ├── models.py                         # Модели
+│   ├── tests.py                          # Тестирование
+│   ├── urls.py                           # Маршруты
+│   └── views.py                          # Логика
+├── shoplist                              # Настройки проекта
+│   ├── settings.py                       # Общие настройки
+│   └── urls.py                           # Общие маршруты
+├── templates                             # HTML-страницы
+│   ├── base.html                         # Базовый шаблон
+│   └── products                 
+│       ├── login.html                    # Вход
+│       ├── product_confirm_delete.html   # Удаление товара
+│       ├── product_detail.html           # Страница товара (детали)
+│       ├── product_form.html             # Добавление товара
+│       ├── product_list.html             # Список товаров
+│       └── register.html                 # Регистрация
+├── db.sqlite3                            # База данных SQLite (создается автоматически)
+├── manage.py                             # Точка входа
+├── README.md                             # Документация
+└── requirements.txt                      # Зависимости проекта
+```
 
 ---
 
