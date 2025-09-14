@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.contrib import messages
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
@@ -78,12 +79,22 @@ class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Товар успешно добавлен!")
+        return response
+
 # Редактирование товара (для менеджера)
 class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Товар успешно обновлён!")
+        return response
 
     def get_success_url(self):
         return reverse_lazy("product_detail", kwargs={"pk": self.object.pk})
@@ -94,3 +105,7 @@ class ProductDeleteView(LoginRequiredMixin, ManagerRequiredMixin, DeleteView):
     context_object_name = "product"
     template_name = "products/product_confirm_delete.html"
     success_url = reverse_lazy("products")
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "Товар удалён!")
+        return super().delete(request, *args, **kwargs)
