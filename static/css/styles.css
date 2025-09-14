@@ -1,11 +1,21 @@
+/* Базовый стиль карточки */
 .card {
-    background-color: #fdfdfd; /* светлый фон */
     border: 1px solid #e0e0e0; /* мягкая обводка */
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Hover эффект */
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Чередование пастельных градиентов по рядам */
+.row .col:nth-child(6n+1) .card { background: linear-gradient(135deg, #fff0f5, #ffe6f0); } /* лавандовый */
+.row .col:nth-child(6n+2) .card { background: linear-gradient(135deg, #f0fff0, #e6fff0); } /* нежно-зелёный */
+.row .col:nth-child(6n+3) .card { background: linear-gradient(135deg, #f0f8ff, #e6f0ff); } /* голубой */
+.row .col:nth-child(6n+4) .card { background: linear-gradient(135deg, #fffaf0, #fff0e6); } /* кремовый */
+.row .col:nth-child(6n+5) .card { background: linear-gradient(135deg, #f0fff5, #e6fff5); } /* мятный */
+.row .col:nth-child(6n+6) .card { background: linear-gradient(135deg, #fff0ff, #ffe6ff); } /* нежно-розовый */
