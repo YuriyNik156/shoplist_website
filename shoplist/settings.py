@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products',
+    'css',
 ]
 
 # Промежуточное ПО
@@ -86,7 +86,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'products.CustomUser'
+AUTH_USER_MODEL = 'css.CustomUser'
 
 # Локализация
 

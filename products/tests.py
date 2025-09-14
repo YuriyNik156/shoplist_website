@@ -75,14 +75,14 @@ class ViewsAccessTest(TestCase):
 
     # Неавторизованный посетитель при попытке зайти на список товаров получает редирект на логин
     def test_visitor_redirects_to_login(self):
-        response = self.client.get(reverse("products"))
+        response = self.client.get(reverse("css"))
         self.assertEqual(response.status_code, 302)
         self.assertIn("/login", response.url)
 
     # Обычный пользователь после логина может просматривать список товаров
     def test_user_can_view_products(self):
         self.client.login(email="user@test.com", password="userpass")
-        response = self.client.get(reverse("products"))
+        response = self.client.get(reverse("css"))
         self.assertEqual(response.status_code, 200)
 
     # Администратор может добавить товар в магазин

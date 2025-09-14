@@ -13,7 +13,7 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(next_page="login"), name="logout"),
 
     # Товары
-    path("", ProductListView.as_view(), name="products"),
+    path("", ProductListView.as_view(), name="css"),
     path("<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
     path("add/", ProductCreateView.as_view(), name="product_add"),
     path("<int:pk>/edit/", ProductUpdateView.as_view(), name="product_edit"),
