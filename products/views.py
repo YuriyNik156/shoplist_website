@@ -14,8 +14,8 @@ from .models import CustomUser, Product, Shop
 class RegisterView(CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm
-    template_name = "css/register.html"
-    success_url = reverse_lazy("css")
+    template_name = "products/register.html"
+    success_url = reverse_lazy("products")
 
     def form_valid(self, form):
         user = form.save()
@@ -24,16 +24,16 @@ class RegisterView(CreateView):
 
 # Обработка для логина пользователя
 class CustomLoginView(LoginView):
-    template_name = "css/login.html"
+    template_name = "products/login.html"
 
     def get_success_url(self):
-        return reverse_lazy("css")
+        return reverse_lazy("products")
 
 # Список товаров (для авторизованных пользователей)
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
-    template_name = "css/product_list.html"
-    context_object_name = "css"
+    template_name = "products/product_list.html"
+    context_object_name = "products"
     paginate_by = 6
     login_url = '/login/'
     redirect_field_name = 'next'
@@ -60,7 +60,7 @@ class ProductListView(LoginRequiredMixin, ListView):
 # Детальное представление товара (для авторизованных пользователей)
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
-    template_name = "css/product_detail.html"
+    template_name = "products/product_detail.html"
     context_object_name = "product"
 
 # Проверка роли менеджера
@@ -75,15 +75,15 @@ class ManagerRequiredMixin(UserPassesTestMixin):
 class ProductCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    template_name = "css/product_form.html"
-    success_url = reverse_lazy("css")
+    template_name = "products/product_form.html"
+    success_url = reverse_lazy("products")
 
 # Редактирование товара (для менеджера)
 class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = "css/product_form.html"
-    success_url = reverse_lazy("css")
+    template_name = "products/product_form.html"
+    success_url = reverse_lazy("products")
 
     def get_success_url(self):
         return reverse_lazy("product_detail", kwargs={"pk": self.object.pk})
@@ -92,5 +92,5 @@ class ProductUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
 class ProductDeleteView(LoginRequiredMixin, ManagerRequiredMixin, DeleteView):
     model = Product
     context_object_name = "product"
-    template_name = "css/product_confirm_delete.html"
-    success_url = reverse_lazy("css")
+    template_name = "products/product_confirm_delete.html"
+    success_url = reverse_lazy("products")

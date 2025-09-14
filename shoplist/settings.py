@@ -86,7 +86,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'css.CustomUser'
+AUTH_USER_MODEL = 'products.CustomUser'
 
 # Локализация
 
