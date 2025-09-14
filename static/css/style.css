@@ -1,4 +1,3 @@
-/* Стиль для карточек магазина */
 .card {
     background-color: #fdfdfd; /* светлый фон */
     border: 1px solid #e0e0e0; /* мягкая обводка */
@@ -10,4 +9,3 @@
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
