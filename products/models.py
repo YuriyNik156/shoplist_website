@@ -31,7 +31,6 @@ class Product(models.Model):
 # Кастомная модель пользователя
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
-        ('admin', 'Admin'),
         ('sales_executive', 'Sales Executive'),
         ('user', 'User')
     ]

@@ -68,7 +68,7 @@ class ManagerRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return (
                 self.request.user.is_authenticated
-                and getattr(self.request.user, "role", None) in ["sales_executive", "admin"]
+                and getattr(self.request.user, "role", None) == "sales_executive"
         )
 
 # Создание товара (для менеджера)
