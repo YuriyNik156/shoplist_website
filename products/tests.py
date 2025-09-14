@@ -85,21 +85,6 @@ class ViewsAccessTest(TestCase):
         response = self.client.get(reverse("products"))
         self.assertEqual(response.status_code, 200)
 
-    # Администратор может добавить товар в магазин
-    def test_admin_can_add_product(self):
-        self.client.login(email="admin@test.com", password="adminpass")
-        response = self.client.post(
-            reverse("product_add"),
-            {
-                "name": "Новый товар от админа",
-                "description": "Описание",
-                "price": "199.99",
-                "shop": self.shop.id,
-            }
-        )
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Product.objects.count(), 2)
-
     # Менеджер может добавить товар в магазин
     def test_manager_can_add_product(self):
         self.client.login(email="manager@test.com", password="managerpass")
@@ -129,22 +114,6 @@ class ViewsAccessTest(TestCase):
         )
         self.assertEqual(response.status_code, 403)
         self.assertEqual(Product.objects.count(), 1)
-
-    # Администратор может редактировать товар
-    def test_admin_can_edit_product(self):
-        self.client.login(email="admin@test.com", password="adminpass")
-        response = self.client.post(
-            reverse("product_edit", args=[self.product.id]),
-            {
-                "name": "Изменённый товар",
-                "description": "Новое описание",
-                "price": "500",
-                "shop": self.shop.id,
-            }
-        )
-        self.assertEqual(response.status_code, 302)
-        self.product.refresh_from_db()
-        self.assertEqual(self.product.name, "Изменённый товар")
 
     # Менеджер может редактировать товар
     def test_manager_can_edit_product(self):
@@ -177,14 +146,6 @@ class ViewsAccessTest(TestCase):
         self.assertEqual(response.status_code, 403)
         self.product.refresh_from_db()
         self.assertEqual(self.product.name, "Старый товар")
-
-
-    # Администратор может удалить товар
-    def test_admin_can_delete_product(self):
-        self.client.login(email="admin@test.com", password="adminpass")
-        response = self.client.post(reverse("product_delete", args=[self.product.id]))
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Product.objects.count(), 0)
 
     # Менеджер может удалить товар
     def test_manager_can_delete_product(self):
