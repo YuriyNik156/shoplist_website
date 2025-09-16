@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
+
 from . import views
 from .views import (
     RegisterView,
@@ -11,12 +12,13 @@ from .views import (
     CustomLoginView,
 )
 
+#: URL-шаблоны приложения.
 urlpatterns = [
-    # Аутентификация
+
     path("register/", RegisterView.as_view(), name="register"),
     path("login/", CustomLoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(next_page="login"), name="logout"),
-    # Товары
+
     path("", ProductListView.as_view(), name="products"),
     path("<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
     path("add/", ProductCreateView.as_view(), name="product_add"),
