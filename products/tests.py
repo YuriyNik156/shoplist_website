@@ -1,15 +1,17 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+
 from .models import Product, Shop
 
 User = get_user_model()
 
-# Проверка создания магазина и связанного с ним товара
-
 
 class ProductModelTest(TestCase):
+    """Тесты для модели Product."""
+
     def test_create_product(self):
+        """Создание магазина и связанного с ним товара."""
         shop = Shop.objects.create(name="Магазин №1", address="ул. Ленина, 1")
         product = Product.objects.create(
             name="Тестовый товар",
@@ -22,9 +24,11 @@ class ProductModelTest(TestCase):
         self.assertEqual(Product.objects.count(), 1)
 
 
-# Проверка создания кастомного пользователя
 class UserModelTest(TestCase):
+    """Тесты для кастомного пользователя."""
+
     def test_create_user(self):
+        """Создание пользователя с ролью 'user'."""
         user = User.objects.create_user(
             username="testuser", email="test@test.com", password="testpass", role="user"
         )
@@ -33,9 +37,11 @@ class UserModelTest(TestCase):
         self.assertTrue(user.check_password("testpass"))
 
 
-# создание ролей (администратор, менеджер, пользователь)
 class ViewsAccessTest(TestCase):
+    """Тесты доступа к views.py в зависимости от роли."""
+
     def setUp(self):
+        """Создание пользователей, магазина и тестового товара."""
         self.admin = User.objects.create_superuser(
             username="admin", email="admin@test.com", password="adminpass", role="admin"
         )
@@ -57,20 +63,20 @@ class ViewsAccessTest(TestCase):
             name="Старый товар", description="Описание", price=100, shop=self.shop
         )
 
-    # Неавторизованный посетитель при попытке зайти на список товаров получает редирект на логин
     def test_visitor_redirects_to_login(self):
+        """Неавторизованный пользователь → редирект на логин."""
         response = self.client.get(reverse("products"))
         self.assertEqual(response.status_code, 302)
         self.assertIn("/login", response.url)
 
-    # Обычный пользователь после логина может просматривать список товаров
     def test_user_can_view_products(self):
+        """Обычный пользователь может просматривать товары."""
         self.client.login(email="user@test.com", password="userpass")
         response = self.client.get(reverse("products"))
         self.assertEqual(response.status_code, 200)
 
-    # Менеджер может добавить товар в магазин
     def test_manager_can_add_product(self):
+        """Менеджер может добавить товар."""
         self.client.login(email="manager@test.com", password="managerpass")
         response = self.client.post(
             reverse("product_add"),
@@ -84,8 +90,8 @@ class ViewsAccessTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Product.objects.count(), 2)
 
-    # Обычный пользователь не может добавить товар (ошибка 403)
     def test_user_cannot_add_product(self):
+        """Обычный пользователь не может добавить товар."""
         self.client.login(email="user@test.com", password="userpass")
         response = self.client.post(
             reverse("product_add"),
@@ -99,8 +105,8 @@ class ViewsAccessTest(TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(Product.objects.count(), 1)
 
-    # Менеджер может редактировать товар
     def test_manager_can_edit_product(self):
+        """Менеджер может редактировать товар."""
         self.client.login(email="manager@test.com", password="managerpass")
         response = self.client.post(
             reverse("product_edit", args=[self.product.id]),
@@ -115,8 +121,8 @@ class ViewsAccessTest(TestCase):
         self.product.refresh_from_db()
         self.assertEqual(self.product.name, "Менеджер изменил товар")
 
-    # Обычный пользователь не может редактировать товар (ошибка 403)
     def test_user_cannot_edit_product(self):
+        """Обычный пользователь не может редактировать товар."""
         self.client.login(email="user@test.com", password="userpass")
         response = self.client.post(
             reverse("product_edit", args=[self.product.id]),
@@ -131,15 +137,15 @@ class ViewsAccessTest(TestCase):
         self.product.refresh_from_db()
         self.assertEqual(self.product.name, "Старый товар")
 
-    # Менеджер может удалить товар
     def test_manager_can_delete_product(self):
+        """Менеджер может удалить товар."""
         self.client.login(email="manager@test.com", password="managerpass")
         response = self.client.post(reverse("product_delete", args=[self.product.id]))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Product.objects.count(), 0)
 
-    # Обычный пользователь не может удалить товар (ошибка 403)
     def test_user_cannot_delete_product(self):
+        """Обычный пользователь не может удалить товар."""
         self.client.login(email="user@test.com", password="userpass")
         response = self.client.post(reverse("product_delete", args=[self.product.id]))
         self.assertEqual(response.status_code, 403)
