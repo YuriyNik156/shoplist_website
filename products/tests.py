@@ -6,17 +6,16 @@ from .models import Product, Shop
 User = get_user_model()
 
 # Проверка создания магазина и связанного с ним товара
+
+
 class ProductModelTest(TestCase):
     def test_create_product(self):
-        shop = Shop.objects.create(
-            name="Магазин №1",
-            address="ул. Ленина, 1"
-        )
+        shop = Shop.objects.create(name="Магазин №1", address="ул. Ленина, 1")
         product = Product.objects.create(
             name="Тестовый товар",
             description="Описание товара",
             price=100.50,
-            shop=shop
+            shop=shop,
         )
         self.assertEqual(product.name, "Тестовый товар")
         self.assertEqual(product.shop.name, "Магазин №1")
@@ -27,10 +26,7 @@ class ProductModelTest(TestCase):
 class UserModelTest(TestCase):
     def test_create_user(self):
         user = User.objects.create_user(
-            username="testuser",
-            email="test@test.com",
-            password="testpass",
-            role="user"
+            username="testuser", email="test@test.com", password="testpass", role="user"
         )
         self.assertEqual(user.username, "testuser")
         self.assertEqual(user.role, "user")
@@ -41,36 +37,24 @@ class UserModelTest(TestCase):
 class ViewsAccessTest(TestCase):
     def setUp(self):
         self.admin = User.objects.create_superuser(
-            username="admin",
-            email="admin@test.com",
-            password="adminpass",
-            role="admin"
+            username="admin", email="admin@test.com", password="adminpass", role="admin"
         )
         self.manager = User.objects.create_user(
             username="manager",
             email="manager@test.com",
             password="managerpass",
-            role="sales_executive"
+            role="sales_executive",
         )
         self.user = User.objects.create_user(
-            username="user",
-            email="user@test.com",
-            password="userpass",
-            role="user"
+            username="user", email="user@test.com", password="userpass", role="user"
         )
 
         # Создание магазина от имени администратора
-        self.shop = Shop.objects.create(
-            name="Магазин №1",
-            address="ул. Ленина, 1"
-        )
+        self.shop = Shop.objects.create(name="Магазин №1", address="ул. Ленина, 1")
 
         # Создание тестового товара
         self.product = Product.objects.create(
-            name="Старый товар",
-            description="Описание",
-            price=100,
-            shop=self.shop
+            name="Старый товар", description="Описание", price=100, shop=self.shop
         )
 
     # Неавторизованный посетитель при попытке зайти на список товаров получает редирект на логин
@@ -95,7 +79,7 @@ class ViewsAccessTest(TestCase):
                 "description": "Описание",
                 "price": "299.99",
                 "shop": self.shop.id,
-            }
+            },
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Product.objects.count(), 2)
@@ -110,7 +94,7 @@ class ViewsAccessTest(TestCase):
                 "description": "Описание",
                 "price": "399.99",
                 "shop": self.shop.id,
-            }
+            },
         )
         self.assertEqual(response.status_code, 403)
         self.assertEqual(Product.objects.count(), 1)
@@ -125,7 +109,7 @@ class ViewsAccessTest(TestCase):
                 "description": "Новое описание",
                 "price": "600",
                 "shop": self.shop.id,
-            }
+            },
         )
         self.assertEqual(response.status_code, 302)
         self.product.refresh_from_db()
@@ -141,7 +125,7 @@ class ViewsAccessTest(TestCase):
                 "description": "Не должно сработать",
                 "price": "700",
                 "shop": self.shop.id,
-            }
+            },
         )
         self.assertEqual(response.status_code, 403)
         self.product.refresh_from_db()
