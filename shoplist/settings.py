@@ -1,6 +1,9 @@
 from pathlib import Path
 
+
+# -------------------------------------------------------------------
 # Базовые настройки
+# -------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-4l()o8p=0bh4x$sau52_@=$^@v%u7!uel_5^(y3bp^g_zr)9k6"
@@ -10,7 +13,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# -------------------------------------------------------------------
 # Установленные приложения
+# -------------------------------------------------------------------
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -21,7 +26,10 @@ INSTALLED_APPS = [
     "products",
 ]
 
-# Промежуточное ПО
+
+# -------------------------------------------------------------------
+# Промежуточное ПО (Middleware)
+# -------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -33,13 +41,17 @@ MIDDLEWARE = [
 ]
 
 
+# -------------------------------------------------------------------
 # URL и WSGI
+# -------------------------------------------------------------------
 ROOT_URLCONF = "shoplist.urls"
 
 WSGI_APPLICATION = "shoplist.wsgi.application"
 
 
+# -------------------------------------------------------------------
 # Шаблоны
+# -------------------------------------------------------------------
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -57,8 +69,9 @@ TEMPLATES = [
 ]
 
 
+# -------------------------------------------------------------------
 # База данных
-
+# -------------------------------------------------------------------
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -67,8 +80,9 @@ DATABASES = {
 }
 
 
+# -------------------------------------------------------------------
 # Аутентификация
-
+# -------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -86,8 +100,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "products.CustomUser"
 
-# Локализация
 
+# -------------------------------------------------------------------
+# Локализация
+# -------------------------------------------------------------------
 LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
@@ -97,8 +113,9 @@ USE_I18N = True
 USE_TZ = True
 
 
+# -------------------------------------------------------------------
 # Статика и медиа
-
+# -------------------------------------------------------------------
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -107,10 +124,11 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
-# Прочее
-
+# -------------------------------------------------------------------
+# Прочие настройки
+# -------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Куда перенаправлять после логина
+# Перенаправления после логина и логаута
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/login/"
